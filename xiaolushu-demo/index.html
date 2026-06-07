@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="小路书本地生活路线管家页面级 Demo，使用本地 mock 数据演示完整流程。"
+    />
+    <title>小路书 - 页面级 Demo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="phone-shell" aria-label="小路书移动端 Demo">
+      <section class="status-bar" aria-hidden="true">
+        <strong>18:30</strong>
+        <span>北京 国贸</span>
+        <div class="status-icons">
+          <i></i><i></i><i></i>
+          <b>5G</b>
+          <em>86</em>
+        </div>
+      </section>
+
+      <section class="screen is-active" data-screen="onboarding">
+        <div class="screen-scroll onboarding-scroll">
+          <div class="brand-block">
+            <div class="brand-mark">路</div>
+            <p class="eyebrow">北京试点 · 本地生活路线管家</p>
+            <h1>小路书先认识一下你的出门偏好</h1>
+            <p>
+              首次配置只保留影响推荐的关键项。之后系统会根据选择、跳过和替换行为自动学习。
+            </p>
+          </div>
+
+          <div class="profile-panel">
+            <div class="field-block">
+              <div class="field-head">
+                <span>常驻城市</span>
+                <small>试点默认</small>
+              </div>
+              <div class="chip-row single-choice" data-profile="city">
+                <button class="chip is-selected" type="button">北京</button>
+                <button class="chip" type="button">上海</button>
+                <button class="chip" type="button">杭州</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-head">
+                <span>人均预算</span>
+                <small>影响 POI 排序</small>
+              </div>
+              <div class="chip-row single-choice" data-profile="budget">
+                <button class="chip" type="button">50 以下</button>
+                <button class="chip" type="button">50-100</button>
+                <button class="chip is-selected" type="button">100-200</button>
+                <button class="chip" type="button">200+</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-head">
+                <span>交通偏好</span>
+                <small>可多选</small>
+              </div>
+              <div class="chip-row multi-choice" data-profile="transport">
+                <button class="chip is-selected" type="button">打车</button>
+                <button class="chip is-selected" type="button">地铁</button>
+                <button class="chip" type="button">步行</button>
+                <button class="chip" type="button">骑行</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-head">
+                <span>排队容忍</span>
+                <small>风险标签会参考它</small>
+              </div>
+              <div class="chip-row single-choice" data-profile="queue">
+                <button class="chip" type="button">不想等</button>
+                <button class="chip is-selected" type="button">15 分钟内</button>
+                <button class="chip" type="button">30 分钟内</button>
+                <button class="chip" type="button">值得就等</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-head">
+                <span>步行容忍</span>
+                <small>路线舒适度</small>
+              </div>
+              <div class="chip-row single-choice" data-profile="walk">
+                <button class="chip" type="button">500m</button>
+                <button class="chip is-selected" type="button">1km</button>
+                <button class="chip" type="button">2km</button>
+                <button class="chip" type="button">不限</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-head">
+                <span>常选口味</span>
+                <small>可多选</small>
+              </div>
+              <div class="chip-row multi-choice" data-profile="food">
+                <button class="chip is-selected" type="button">烤肉</button>
+                <button class="chip is-selected" type="button">日料</button>
+                <button class="chip" type="button">火锅</button>
+                <button class="chip" type="button">川菜</button>
+                <button class="chip" type="button">咖啡</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-head">
+                <span>休闲偏好</span>
+                <small>可多选</small>
+              </div>
+              <div class="chip-row multi-choice" data-profile="leisure">
+                <button class="chip is-selected" type="button">KTV</button>
+                <button class="chip" type="button">电影</button>
+                <button class="chip is-selected" type="button">足疗</button>
+                <button class="chip" type="button">展览</button>
+                <button class="chip" type="button">酒吧</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-actions">
+          <button class="ghost-btn" type="button" data-go="home">跳过</button>
+          <button class="primary-btn" type="button" data-go="home">完成配置</button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="home">
+        <div class="screen-scroll">
+          <header class="home-hero">
+            <div>
+              <p class="eyebrow">当前位置</p>
+              <h2>北京 · 国贸</h2>
+            </div>
+            <button class="round-icon" type="button" aria-label="切换定位">⌖</button>
+          </header>
+
+          <section class="planner-card">
+            <div class="planner-title">
+              <span>今天怎么安排？</span>
+              <small>路线会先生成，商家风险后台确认</small>
+            </div>
+            <textarea id="intentInput" rows="4">今晚下班后想找个地方吃点好的，再安排点放松的活动。</textarea>
+            <div class="planner-actions">
+              <button class="text-link" id="nonLocalBtn" type="button">试试非本地需求</button>
+              <button class="primary-btn compact" id="startPlanBtn" type="button">开始规划</button>
+            </div>
+          </section>
+
+          <section class="section-block">
+            <div class="section-head">
+              <h3>快捷需求</h3>
+              <span>点击后自动带入类目</span>
+            </div>
+            <div class="quick-grid">
+              <button type="button" data-quick="吃饭">吃饭</button>
+              <button type="button" data-quick="唱歌">唱歌</button>
+              <button type="button" data-quick="电影">电影</button>
+              <button type="button" data-quick="足疗">足疗</button>
+              <button type="button" data-quick="逛展">逛展</button>
+              <button type="button" data-quick="咖啡">咖啡</button>
+            </div>
+          </section>
+
+          <section class="section-block">
+            <div class="section-head">
+              <h3>最近路线</h3>
+              <button class="text-link" type="button" data-go="history">全部</button>
+            </div>
+            <div class="mini-route" data-go="route">
+              <strong>国贸下班烤肉 + KTV</strong>
+              <span>总耗时 4h10m · 人均约 150 · 需确认 1 项</span>
+            </div>
+            <div class="mini-route" data-go="route">
+              <strong>望京韩餐 + 足疗</strong>
+              <span>总耗时 3h05m · 少步行 · 上次已保存</span>
+            </div>
+          </section>
+        </div>
+
+        <nav class="tabbar">
+          <button class="is-active" type="button" data-go="home">首页</button>
+          <button type="button" data-go="history">历史</button>
+          <button type="button" data-go="profile">我的</button>
+        </nav>
+      </section>
+
+      <section class="screen" data-screen="clarify">
+        <header class="appbar">
+          <button class="back-btn" type="button" data-go="home" aria-label="返回">‹</button>
+          <div>
+            <p class="eyebrow">需求补齐</p>
+            <h2>把模糊想法变成可规划条件</h2>
+          </div>
+        </header>
+        <div class="screen-scroll with-appbar">
+          <section class="quote-card">
+            <span>用户原始模糊 Query</span>
+            <p>今晚下班后想找个地方吃点好的，再安排点放松的活动。</p>
+          </section>
+
+          <section class="insight-strip">
+            <strong>已识别为本地生活路线</strong>
+            <span>系统已将模糊需求补成：餐饮 + 娱乐 · 工作日晚间 · 北京试点。</span>
+          </section>
+
+          <div class="fields-grid">
+            <button class="condition-card is-complete" type="button">
+              <small>出发地</small>
+              <strong>北京 · 国贸</strong>
+              <span>由当前定位补齐，可改</span>
+            </button>
+            <button class="condition-card is-complete" type="button">
+              <small>开始时间</small>
+              <strong>今天 18:30</strong>
+              <span>由“下班后”推断，点击可改</span>
+            </button>
+            <button class="condition-card" id="partyCard" type="button">
+              <small>人数</small>
+              <strong id="partyValue">2 人</strong>
+              <span>点击切换 1 / 2 / 4 人</span>
+            </button>
+            <button class="condition-card" id="budgetCard" type="button">
+              <small>预算</small>
+              <strong id="budgetValue">人均 150</strong>
+              <span>符合画像：100-200</span>
+            </button>
+            <button class="condition-card is-complete" type="button">
+              <small>交通方式</small>
+              <strong>打车</strong>
+              <span>晚高峰会计算风险</span>
+            </button>
+            <button class="condition-card is-complete" type="button">
+              <small>餐饮小类</small>
+              <strong>烤肉</strong>
+              <span>由“吃点好的”推断，可返回修改</span>
+            </button>
+            <button class="condition-card is-complete" type="button">
+              <small>娱乐小类</small>
+              <strong>KTV</strong>
+              <span>由“放松活动”推断，需要后台电话确认</span>
+            </button>
+            <button class="condition-card" id="endTimeCard" type="button">
+              <small>截止时间</small>
+              <strong id="endTimeValue">不限制</strong>
+              <span>点击设为 23:00 前结束</span>
+            </button>
+          </div>
+        </div>
+        <div class="bottom-actions">
+          <button class="secondary-btn" type="button" data-go="home">返回修改</button>
+          <button class="primary-btn" type="button" data-go="candidates">开始推荐</button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="candidates">
+        <header class="appbar">
+          <button class="back-btn" type="button" data-go="clarify" aria-label="返回">‹</button>
+          <div>
+            <p class="eyebrow">POI 候选</p>
+            <h2>每类选一个，系统再串成路线</h2>
+          </div>
+        </header>
+        <div class="screen-scroll with-appbar bottom-padded">
+          <section class="intent-summary">
+            <strong>国贸出发 · 18:30 · 烤肉 + KTV · 打车</strong>
+            <span>从模糊 Query 补齐后生成，基于预算与 15 分钟排队容忍度排序</span>
+          </section>
+
+          <div id="candidateGroups"></div>
+        </div>
+        <div class="bottom-actions stacked">
+          <div class="selection-summary" id="selectionSummary">请先选择烤肉和 KTV</div>
+          <button class="primary-btn" id="generateRouteBtn" type="button" disabled>生成路线</button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="loading">
+        <div class="loading-center">
+          <div class="route-orbit">
+            <span></span><span></span><span></span>
+          </div>
+          <p class="eyebrow">正在生成路线</p>
+          <h2>先出可执行方案，电话核验后台继续</h2>
+          <div class="progress-list">
+            <div class="progress-item is-done">计算顺路程度</div>
+            <div class="progress-item is-done">生成时间轴</div>
+            <div class="progress-item is-active">检查营业时间</div>
+            <div class="progress-item">启动商家风险确认</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="route">
+        <header class="appbar">
+          <button class="back-btn" type="button" data-go="candidates" aria-label="返回">‹</button>
+          <div>
+            <p class="eyebrow">路线结果</p>
+            <h2 id="routeTitle">国贸下班烤肉 + KTV</h2>
+          </div>
+        </header>
+        <div class="screen-scroll with-appbar bottom-padded">
+          <section class="route-summary">
+            <div>
+              <small>总耗时</small>
+              <strong>4h10m</strong>
+            </div>
+            <div>
+              <small>总通勤</small>
+              <strong id="routeCommute">31m</strong>
+            </div>
+            <div>
+              <small>人均</small>
+              <strong id="routeBudget">约 150</strong>
+            </div>
+            <div>
+              <small>风险</small>
+              <strong id="riskCount">确认中</strong>
+            </div>
+          </section>
+
+          <section class="abstract-map" aria-label="抽象路线图">
+            <div class="map-path"></div>
+            <div class="map-pin start">国贸</div>
+            <div class="map-pin food" id="mapFoodPin">烤肉</div>
+            <div class="map-pin fun" id="mapFunPin">KTV</div>
+            <div class="map-note">晚高峰打车方案 · 预估路况已纳入</div>
+          </section>
+
+          <section class="section-block route-timeline-block">
+            <div class="section-head">
+              <h3>执行时间轴</h3>
+              <span id="verificationHint">商家风险确认中</span>
+            </div>
+            <div class="timeline" id="timeline"></div>
+          </section>
+
+          <section class="section-block">
+            <div class="section-head">
+              <h3>电话核验</h3>
+              <span>只确认营业、等位和等位时长</span>
+            </div>
+            <div class="verification-list" id="verificationList"></div>
+          </section>
+        </div>
+        <div class="bottom-actions triple">
+          <button class="secondary-btn" type="button" id="replaceLastBtn">替换最后地点</button>
+          <button class="secondary-btn" type="button" id="saveRouteBtn">保存</button>
+          <button class="primary-btn" type="button" id="navBtn">开始导航</button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="reselect">
+        <header class="appbar">
+          <button class="back-btn" type="button" data-go="route" aria-label="返回">‹</button>
+          <div>
+            <p class="eyebrow">局部重选</p>
+            <h2>前序固定，只替换最后一个地点</h2>
+          </div>
+        </header>
+        <div class="screen-scroll with-appbar bottom-padded">
+          <section class="locked-route">
+            <span>已固定路线</span>
+            <strong id="lockedRouteText">国贸 → 烤肉店</strong>
+          </section>
+
+          <section class="section-block">
+            <div class="section-head">
+              <h3>为什么想换？</h3>
+              <span>用于调整下一批候选</span>
+            </div>
+            <div class="reason-grid" id="reasonGrid">
+              <button class="is-selected" type="button">未接通，风险不确定</button>
+              <button type="button">太远</button>
+              <button type="button">太贵</button>
+              <button type="button">排队风险高</button>
+            </div>
+          </section>
+
+          <section class="section-block">
+            <div class="section-head">
+              <h3>新的 KTV 候选</h3>
+              <span>基于前序节点重新计算</span>
+            </div>
+            <div id="reselectList"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="history">
+        <header class="appbar">
+          <button class="back-btn" type="button" data-go="home" aria-label="返回">‹</button>
+          <div>
+            <p class="eyebrow">历史路线</p>
+            <h2>复用前会重新计算和确认风险</h2>
+          </div>
+        </header>
+        <div class="screen-scroll with-appbar">
+          <div class="history-list">
+            <article class="history-card">
+              <span>昨天 19:10</span>
+              <strong>望京韩餐 + 足疗</strong>
+              <p>总耗时 3h05m · 少步行 · 已导航</p>
+              <button class="secondary-btn" type="button" data-reuse>再来一次</button>
+            </article>
+            <article class="history-card">
+              <span>周六 14:20</span>
+              <strong>五道口咖啡 + 桌游</strong>
+              <p>人均 120 · 未接通 1 家 · 已保存</p>
+              <button class="secondary-btn" type="button" data-reuse>再来一次</button>
+            </article>
+            <article class="history-card">
+              <span>上周五 18:40</span>
+              <strong>三里屯西餐 + Livehouse</strong>
+              <p>通勤 28m · 预算偏高 · 未保存</p>
+              <button class="secondary-btn" type="button" data-reuse>再来一次</button>
+            </article>
+          </div>
+        </div>
+        <nav class="tabbar">
+          <button type="button" data-go="home">首页</button>
+          <button class="is-active" type="button" data-go="history">历史</button>
+          <button type="button" data-go="profile">我的</button>
+        </nav>
+      </section>
+
+      <section class="screen" data-screen="profile">
+        <header class="appbar">
+          <button class="back-btn" type="button" data-go="home" aria-label="返回">‹</button>
+          <div>
+            <p class="eyebrow">我的偏好</p>
+            <h2>只管理基础配置，不暴露算法标签</h2>
+          </div>
+        </header>
+        <div class="screen-scroll with-appbar">
+          <section class="profile-summary">
+            <div class="avatar">路</div>
+            <div>
+              <strong>北京 · 下班后路线用户</strong>
+              <span>历史偏好在后台自动学习</span>
+            </div>
+          </section>
+
+          <div class="settings-list">
+            <button type="button">
+              <span>默认预算</span>
+              <strong id="profileBudget">100-200</strong>
+            </button>
+            <button type="button">
+              <span>交通偏好</span>
+              <strong>打车 / 地铁</strong>
+            </button>
+            <button type="button">
+              <span>排队容忍</span>
+              <strong>15 分钟内</strong>
+            </button>
+            <button type="button">
+              <span>常去商圈</span>
+              <strong>国贸、望京、三里屯</strong>
+            </button>
+            <button type="button">
+              <span>兴趣偏好</span>
+              <strong>烤肉、日料、KTV、足疗</strong>
+            </button>
+          </div>
+        </div>
+        <nav class="tabbar">
+          <button type="button" data-go="home">首页</button>
+          <button type="button" data-go="history">历史</button>
+          <button class="is-active" type="button" data-go="profile">我的</button>
+        </nav>
+      </section>
+
+      <div class="modal" id="modal" aria-hidden="true">
+        <div class="modal-card">
+          <button class="modal-close" id="modalClose" type="button" aria-label="关闭">×</button>
+          <p class="eyebrow" id="modalEyebrow">提示</p>
+          <h3 id="modalTitle"></h3>
+          <p id="modalBody"></p>
+          <div class="modal-actions" id="modalActions"></div>
+        </div>
+      </div>
+
+      <div class="toast" id="toast" role="status"></div>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
