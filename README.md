@@ -58,12 +58,59 @@ For the full diagram and rationale see [`backend/docs/architecture-l1-domains.md
 PathBook/
 ├── .codebuddy/
 │   └── rules/
-│       └── project-rules.md          # AI-assisted development rules (always applied)
+│       └── project-rules.md              # AI-assisted development rules (always applied)
 ├── backend/
-│   └── docs/
-│       ├── architecture-l1-domains.md
-│       └── project-rules.md          # Detailed engineering specification
-└── frontend/                         # iOS SwiftUI client (planned)
+│   ├── app/
+│   │   ├── main.py                       # FastAPI entry point (/health)
+│   │   ├── config.py                     # pydantic-settings config
+│   │   ├── gateway/                      # ① Gateway: routing & orchestration
+│   │   │   ├── router.py
+│   │   │   ├── orchestrator.py
+│   │   │   └── schemas.py
+│   │   ├── understanding/                # ② Understanding & Slot Filling
+│   │   │   ├── service.py
+│   │   │   └── schemas.py
+│   │   ├── route_engine/                 # ③ Route Engine
+│   │   │   ├── service.py
+│   │   │   └── schemas.py
+│   │   ├── verification/                 # ④ Verification
+│   │   │   ├── service.py
+│   │   │   └── schemas.py
+│   │   ├── profile/                      # ⑤ Profile & Behavior
+│   │   │   ├── service.py
+│   │   │   └── schemas.py
+│   │   ├── infra/                        # ⑥ Infrastructure
+│   │   │   ├── database.py
+│   │   │   ├── llm/
+│   │   │   ├── external/
+│   │   │   └── toolkit/
+│   │   └── shared/                       # Cross-domain shared (exceptions, response)
+│   │       ├── exceptions.py
+│   │       └── response.py
+│   ├── tests/
+│   ├── pyproject.toml
+│   ├── .env.example
+│   └── .gitignore
+├── docs/
+│   ├── architecture-l1-domains.md
+│   └── project-rules.md                  # Detailed engineering specification
+└── frontend/                             # iOS SwiftUI client (planned)
+```
+
+### Quick Start
+
+```bash
+cd backend
+# 创建虚拟环境并安装依赖（推荐用 uv）
+uv venv && source .venv/bin/activate
+uv pip install -e ".[dev]"
+
+# 复制环境变量
+cp .env.example .env
+
+# 启动开发服务器
+uvicorn app.main:app --reload
+# 访问 http://127.0.0.1:8000/health
 ```
 
 ### Engineering Conventions
@@ -153,12 +200,59 @@ To be determined.
 PathBook/
 ├── .codebuddy/
 │   └── rules/
-│       └── project-rules.md          # AI 辅助开发规则（始终生效）
+│       └── project-rules.md              # AI 辅助开发规则（始终生效）
 ├── backend/
-│   └── docs/
-│       ├── architecture-l1-domains.md
-│       └── project-rules.md          # 工程规范详版
-└── frontend/                         # iOS SwiftUI 客户端（规划中）
+│   ├── app/
+│   │   ├── main.py                       # FastAPI 入口（/health）
+│   │   ├── config.py                     # pydantic-settings 配置
+│   │   ├── gateway/                      # ① 接入层：路由与编排
+│   │   │   ├── router.py
+│   │   │   ├── orchestrator.py
+│   │   │   └── schemas.py
+│   │   ├── understanding/                # ② 理解与补齐域
+│   │   │   ├── service.py
+│   │   │   └── schemas.py
+│   │   ├── route_engine/                 # ③ 路线引擎域
+│   │   │   ├── service.py
+│   │   │   └── schemas.py
+│   │   ├── verification/                 # ④ 核验体系域
+│   │   │   ├── service.py
+│   │   │   └── schemas.py
+│   │   ├── profile/                      # ⑤ 画像与行为域
+│   │   │   ├── service.py
+│   │   │   └── schemas.py
+│   │   ├── infra/                        # ⑥ 基础设施域
+│   │   │   ├── database.py
+│   │   │   ├── llm/
+│   │   │   ├── external/
+│   │   │   └── toolkit/
+│   │   └── shared/                       # 跨域共享（异常、响应格式）
+│   │       ├── exceptions.py
+│   │       └── response.py
+│   ├── tests/
+│   ├── pyproject.toml
+│   ├── .env.example
+│   └── .gitignore
+├── docs/
+│   ├── architecture-l1-domains.md
+│   └── project-rules.md                  # 工程规范详版
+└── frontend/                             # iOS SwiftUI 客户端（规划中）
+```
+
+### 快速启动
+
+```bash
+cd backend
+# 创建虚拟环境并安装依赖（推荐用 uv）
+uv venv && source .venv/bin/activate
+uv pip install -e ".[dev]"
+
+# 复制环境变量
+cp .env.example .env
+
+# 启动开发服务器
+uvicorn app.main:app --reload
+# 访问 http://127.0.0.1:8000/health
 ```
 
 ### 工程约束
