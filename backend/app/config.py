@@ -30,6 +30,13 @@ class Settings(BaseSettings):
     # 数据库
     database_url: str = "mysql+aiomysql://root:root@localhost:3306/pathbook"
 
+    # JWT
+    jwt_secret: str = "change-me-to-random-string"
+    jwt_expire_hours: int = 168  # 7天
+
+    # 日志
+    log_level: str = "INFO"
+
     # LLM
     llm_api_key: str = ""
     llm_base_url: str = ""

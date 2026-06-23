@@ -1,0 +1,15 @@
+{
+  "en_US": {
+    "10000": "Unknown error",
+    "10001": "Validation failed",
+    "10002": "Internal server error",
+    "40001": "Username already exists",
+    "40002": "User not found",
+    "40003": "Account is disabled",
+    "40004": "Password must be at least 6 characters",
+    "40101": "Invalid credentials",
+    "40102": "Token expired, please login again",
+    "40103": "Invalid authentication token",
+    "40301": "Permission denied"
+  }
+}
