@@ -22,6 +22,9 @@ def _get_locale(request: Request) -> str:
 
 def _code_to_http_status(code: int) -> int:
     """错误码 → HTTP 状态码映射."""
+    # 特殊映射：用户已存在 → 409 Conflict
+    if code == ErrorCode.USER_ALREADY_EXISTS:
+        return 409
     if 40100 <= code <= 40199:
         return 401
     elif 40300 <= code <= 40399:

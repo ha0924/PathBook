@@ -9,7 +9,9 @@
 - **项目**：小路书 — AI 驱动的个性化路线规划助手
 - **阶段**：MVP
 - **服务端**：Python + FastAPI + MySQL
-- **客户端**：iOS SwiftUI (MVVM)
+- **客户端**：
+  - MVP 阶段：Web SPA（Vue 3 + Vite + TypeScript）
+  - 后续阶段：iOS SwiftUI / Android 原生客户端
 - **架构**：6 大域（接入层 / 理解补齐 / 路线引擎 / 核验 / 画像行为 / 基础设施）
 
 ---

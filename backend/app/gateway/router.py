@@ -2,7 +2,12 @@
 
 from fastapi import APIRouter
 
+from app.profile.router import router as auth_router
+
 router = APIRouter(prefix="/api/v1", tags=["gateway"])
+
+# 挂载用户认证路由
+router.include_router(auth_router)
 
 
 @router.get("/ping")

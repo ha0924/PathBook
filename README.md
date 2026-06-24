@@ -99,18 +99,38 @@ PathBook/
 
 ### Quick Start
 
+**Requirements**: Python ≥ 3.11, MySQL 8.x (for running server; tests use SQLite in-memory)
+
 ```bash
 cd backend
-# 创建虚拟环境并安装依赖（推荐用 uv）
+
+# 1. Create virtual environment & install dependencies (uv recommended)
 uv venv && source .venv/bin/activate
 uv pip install -e ".[dev]"
 
-# 复制环境变量
-cp .env.example .env
+# Or with standard pip:
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
 
-# 启动开发服务器
-uvicorn app.main:app --reload
-# 访问 http://127.0.0.1:8000/health
+# 2. Configure environment variables
+cp .env.example .env
+# Edit .env — at minimum set JWT_SECRET and DATABASE_URL
+
+# 3. Start dev server (default port: 8000)
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+After startup:
+- Health check: http://localhost:8000/health
+- API docs (Swagger): http://localhost:8000/docs
+- Ping: http://localhost:8000/api/v1/ping
+
+#### Run Tests (no MySQL needed)
+
+```bash
+cd backend
+source .venv/bin/activate
+pytest tests/ -v
 ```
 
 ### Engineering Conventions
@@ -241,18 +261,38 @@ PathBook/
 
 ### 快速启动
 
+**前置要求**：Python ≥ 3.11，MySQL 8.x（运行服务器需要；跑测试使用 SQLite 内存库，无需 MySQL）
+
 ```bash
 cd backend
-# 创建虚拟环境并安装依赖（推荐用 uv）
+
+# 1. 创建虚拟环境并安装依赖（推荐用 uv）
 uv venv && source .venv/bin/activate
 uv pip install -e ".[dev]"
 
-# 复制环境变量
-cp .env.example .env
+# 或者用标准 pip：
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
 
-# 启动开发服务器
-uvicorn app.main:app --reload
-# 访问 http://127.0.0.1:8000/health
+# 2. 配置环境变量
+cp .env.example .env
+# 编辑 .env，至少设置 JWT_SECRET 和 DATABASE_URL
+
+# 3. 启动开发服务器（默认端口：8000）
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+启动后可访问：
+- 健康检查：http://localhost:8000/health
+- API 文档（Swagger）：http://localhost:8000/docs
+- Ping：http://localhost:8000/api/v1/ping
+
+#### 运行测试（无需 MySQL）
+
+```bash
+cd backend
+source .venv/bin/activate
+pytest tests/ -v
 ```
 
 ### 工程约束
