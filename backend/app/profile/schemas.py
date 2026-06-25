@@ -26,6 +26,7 @@ class UserOut(BaseModel):
     username: str
     is_active: bool
     created_at: datetime
+    has_profile: bool = False
 
     model_config = {"from_attributes": True}
 

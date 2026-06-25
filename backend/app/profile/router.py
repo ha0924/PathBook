@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.infra.database import get_db
-from app.profile import service
+from app.profile import profile_repository, service
 from app.profile.dependencies import get_current_user
 from app.profile.models import User
 from app.profile.schemas import LoginRequest, RegisterRequest, TokenOut, UserOut
@@ -33,6 +33,12 @@ async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/me")
-async def me(current_user: User = Depends(get_current_user)):
-    """获取当前用户信息."""
-    return success(data=UserOut.model_validate(current_user).model_dump())
+async def me(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """获取当前用户信息（含 has_profile 标识）."""
+    has_profile = await profile_repository.exists_initialized(db, current_user.id)
+    user_data = UserOut.model_validate(current_user).model_dump()
+    user_data["has_profile"] = has_profile
+    return success(data=user_data)

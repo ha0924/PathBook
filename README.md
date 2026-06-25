@@ -99,7 +99,7 @@ PathBook/
 
 ### Quick Start
 
-**Requirements**: Python ≥ 3.11, MySQL 8.x (for running server; tests use SQLite in-memory)
+**Requirements**: Python ≥ 3.9, MySQL 8.x (for running server; tests use SQLite in-memory)
 
 ```bash
 cd backend
@@ -135,6 +135,7 @@ pytest tests/ -v
 
 ### Engineering Conventions
 
+- **Python ≥ 3.9 compatibility** — type annotations must use `typing` module constructs (`Optional[X]`, `List[str]`, `Dict[str, Any]`) instead of Python 3.10+ syntax (`X | Y`, `list[str]`). This ensures runtime compatibility with Python 3.9+.
 - **Domain isolation** — domains communicate via interfaces; no cross-domain access to internal implementation.
 - **LLM access centralized** — all LLM calls go through the Infrastructure domain. Business code must not `import openai` directly.
 - **Secrets via environment only** — managed by `python-dotenv` / `.env`; never committed.
@@ -261,7 +262,7 @@ PathBook/
 
 ### 快速启动
 
-**前置要求**：Python ≥ 3.11，MySQL 8.x（运行服务器需要；跑测试使用 SQLite 内存库，无需 MySQL）
+**前置要求**：Python ≥ 3.9，MySQL 8.x（运行服务器需要；跑测试使用 SQLite 内存库，无需 MySQL）
 
 ```bash
 cd backend
@@ -297,6 +298,7 @@ pytest tests/ -v
 
 ### 工程约束
 
+- **Python ≥ 3.9 兼容**：类型注解必须使用 `typing` 模块写法（`Optional[X]`、`List[str]`、`Dict[str, Any]`），禁止使用 Python 3.10+ 的 `X | Y` 联合语法和内置泛型下标 `list[str]`。确保运行时兼容 Python 3.9+。
 - **域间隔离**：域之间通过接口通信，不跨域引用内部实现。
 - **LLM 调用收敛**：所有 LLM 调用走基础设施域，业务层不直接 `import openai`。
 - **Secret 仅环境变量**：通过 `python-dotenv` / `.env` 管理，禁止入库。

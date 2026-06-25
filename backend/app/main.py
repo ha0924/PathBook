@@ -1,8 +1,12 @@
 """小路书 - FastAPI 应用入口."""
 
+from __future__ import annotations
+
 from contextlib import asynccontextmanager
+from typing import Dict
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.gateway.error_handler import register_error_handlers
@@ -20,6 +24,7 @@ async def lifespan(app: FastAPI):
     """应用生命周期：启动时建表."""
     # 确保模型被导入以注册到 Base.metadata
     import app.profile.models  # noqa: F401
+    import app.profile.profile_models  # noqa: F401
 
     await create_tables()
     yield
@@ -30,6 +35,15 @@ app = FastAPI(
     description="AI 驱动的个性化路线规划助手",
     version="0.1.0",
     lifespan=lifespan,
+)
+
+# 注册 CORS 中间件（开发环境允许本地前端跨域）
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:3000", "http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # 注册中间件
@@ -43,6 +57,6 @@ app.include_router(gateway_router)
 
 
 @app.get("/health")
-async def health_check() -> dict[str, str]:
+async def health_check() -> Dict[str, str]:
     """健康检查端点."""
     return {"status": "ok"}

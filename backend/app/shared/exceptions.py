@@ -4,7 +4,10 @@
 全局异常处理器负责翻译 message、推导 HTTP status、记录日志。
 """
 
+from __future__ import annotations
+
 from enum import IntEnum
+from typing import Optional
 
 
 class ErrorCode(IntEnum):
@@ -29,6 +32,10 @@ class ErrorCode(IntEnum):
     USER_DISABLED = 40003
     USER_PASSWORD_TOO_SHORT = 40004
 
+    # ===== 画像 400xx =====
+    PROFILE_ALREADY_INITIALIZED = 40005
+    PROFILE_NOT_FOUND = 40006
+
     # ===== 认证鉴权 401xx =====
     AUTH_INVALID_CREDENTIALS = 40101
     AUTH_TOKEN_EXPIRED = 40102
@@ -46,7 +53,7 @@ class BizError(Exception):
         raise BizError(ErrorCode.AUTH_TOKEN_EXPIRED, detail="token 签名不匹配")
     """
 
-    def __init__(self, code: ErrorCode, detail: str | None = None) -> None:
+    def __init__(self, code: ErrorCode, detail: Optional[str] = None) -> None:
         self.code = code
         self.detail = detail  # 仅开发环境返回，生产隐藏
         super().__init__(f"[{code.value}] {code.name}")

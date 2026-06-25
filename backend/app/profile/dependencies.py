@@ -3,6 +3,10 @@
 提供 get_current_user，从 Authorization header 解析 JWT 并返回当前用户。
 """
 
+from __future__ import annotations
+
+from typing import Optional
+
 from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,7 +21,7 @@ _bearer_scheme = HTTPBearer(auto_error=False)
 
 
 async def get_current_user(
-    credentials: HTTPAuthorizationCredentials | None = Depends(_bearer_scheme),
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(_bearer_scheme),
     db: AsyncSession = Depends(get_db),
 ) -> User:
     """解析 Bearer token 并返回当前用户.
@@ -32,7 +36,7 @@ async def get_current_user(
     if payload is None:
         raise BizError(ErrorCode.AUTH_TOKEN_INVALID, detail="Token decode failed")
 
-    user_id: int | None = payload.get("user_id")
+    user_id: Optional[int] = payload.get("user_id")
     if user_id is None:
         raise BizError(ErrorCode.AUTH_TOKEN_INVALID, detail="Token payload missing user_id")
 

@@ -4,6 +4,10 @@
 翻译文件位于 shared/locales/ 目录下。
 """
 
+from __future__ import annotations
+
+from typing import Optional
+
 import i18n
 from pathlib import Path
 
@@ -18,7 +22,7 @@ i18n.set("filename_format", "{namespace}.{locale}.{format}")
 i18n.load_path.append(str(_LOCALES_DIR))
 
 
-def t(key: str, locale: str | None = None, **kwargs: object) -> str:
+def t(key: str, locale: Optional[str] = None, **kwargs: object) -> str:
     """统一翻译入口.
 
     用法：

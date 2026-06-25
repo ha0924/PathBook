@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="小路书 - AI 驱动的个性化路线规划助手" />
+    <title>小路书</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="phone-shell" aria-label="小路书移动端">
+      <!-- 状态栏 -->
+      <section class="status-bar" aria-hidden="true">
+        <strong>18:30</strong>
+        <span id="cityLabel">北京 国贸</span>
+        <div class="status-icons">
+          <i></i><i></i><i></i>
+          <b>5G</b>
+          <em>86</em>
+        </div>
+      </section>
+
+      <!-- ========== 登录/注册页 ========== -->
+      <section class="screen is-active" data-screen="auth">
+        <div class="screen-scroll">
+          <div class="brand-block">
+            <div class="brand-mark">路</div>
+            <p class="eyebrow">本地生活路线管家</p>
+            <h1>小路书</h1>
+            <p>AI 驱动的个性化路线规划助手，帮你安排吃喝玩乐一条龙。</p>
+          </div>
+
+          <div class="auth-panel">
+            <!-- Tab 切换 -->
+            <div class="auth-tabs">
+              <button class="auth-tab is-active" type="button" data-auth-tab="login">登录</button>
+              <button class="auth-tab" type="button" data-auth-tab="register">注册</button>
+            </div>
+
+            <!-- 登录表单 -->
+            <form class="auth-form" id="loginForm" autocomplete="off">
+              <div class="input-group">
+                <label for="loginUsername">用户名</label>
+                <input type="text" id="loginUsername" name="username" placeholder="请输入用户名" required minlength="3" maxlength="50" autocomplete="username" />
+              </div>
+              <div class="input-group">
+                <label for="loginPassword">密码</label>
+                <input type="password" id="loginPassword" name="password" placeholder="请输入密码" required minlength="6" maxlength="128" autocomplete="current-password" />
+              </div>
+              <button class="primary-btn auth-submit" type="submit">登录</button>
+            </form>
+
+            <!-- 注册表单 -->
+            <form class="auth-form is-hidden" id="registerForm" autocomplete="off">
+              <div class="input-group">
+                <label for="regUsername">用户名</label>
+                <input type="text" id="regUsername" name="username" placeholder="3-50 个字符" required minlength="3" maxlength="50" autocomplete="username" />
+              </div>
+              <div class="input-group">
+                <label for="regPassword">密码</label>
+                <input type="password" id="regPassword" name="password" placeholder="至少 6 个字符" required minlength="6" maxlength="128" autocomplete="new-password" />
+              </div>
+              <div class="input-group">
+                <label for="regPasswordConfirm">确认密码</label>
+                <input type="password" id="regPasswordConfirm" name="passwordConfirm" placeholder="再次输入密码" required minlength="6" maxlength="128" autocomplete="new-password" />
+              </div>
+              <button class="primary-btn auth-submit" type="submit">注册</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== Onboarding 画像初始化 ========== -->
+      <section class="screen" data-screen="onboarding">
+        <div class="screen-scroll onboarding-scroll">
+          <div class="brand-block">
+            <div class="brand-mark">路</div>
+            <p class="eyebrow">北京试点 · 本地生活路线管家</p>
+            <h1>先认识一下你的出门偏好</h1>
+            <p>首次配置只保留影响推荐的关键项。之后系统会根据选择、跳过和替换行为自动学习。</p>
+          </div>
+
+          <div class="profile-panel">
+            <div class="field-block">
+              <div class="field-head">
+                <span>常驻城市</span>
+                <small>试点默认</small>
+              </div>
+              <div class="chip-row single-choice" data-profile="home_cities">
+                <button class="chip is-selected" type="button" data-value="北京">北京</button>
+                <button class="chip" type="button" data-value="上海">上海</button>
+                <button class="chip" type="button" data-value="杭州">杭州</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-head">
+                <span>人均预算</span>
+                <small>影响 POI 排序</small>
+              </div>
+              <div class="chip-row single-choice" data-profile="budget_level">
+                <button class="chip" type="button" data-value="low">50 以下</button>
+                <button class="chip" type="button" data-value="medium">50-100</button>
+                <button class="chip is-selected" type="button" data-value="high">100-200</button>
+                <button class="chip" type="button" data-value="premium">200+</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-head">
+                <span>交通偏好</span>
+                <small>可多选</small>
+              </div>
+              <div class="chip-row multi-choice" data-profile="transport_preferences">
+                <button class="chip is-selected" type="button" data-value="taxi">打车</button>
+                <button class="chip is-selected" type="button" data-value="subway">地铁</button>
+                <button class="chip" type="button" data-value="walk">步行</button>
+                <button class="chip" type="button" data-value="bike">骑行</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-head">
+                <span>排队容忍</span>
+                <small>风险标签会参考它</small>
+              </div>
+              <div class="chip-row single-choice" data-profile="queue_tolerance_minutes">
+                <button class="chip" type="button" data-value="0">不想等</button>
+                <button class="chip is-selected" type="button" data-value="15">15 分钟内</button>
+                <button class="chip" type="button" data-value="30">30 分钟内</button>
+                <button class="chip" type="button" data-value="120">值得就等</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-head">
+                <span>步行容忍</span>
+                <small>路线舒适度</small>
+              </div>
+              <div class="chip-row single-choice" data-profile="walking_tolerance_meters">
+                <button class="chip" type="button" data-value="500">500m</button>
+                <button class="chip is-selected" type="button" data-value="1000">1km</button>
+                <button class="chip" type="button" data-value="2000">2km</button>
+                <button class="chip" type="button" data-value="5000">不限</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-head">
+                <span>美食偏好</span>
+                <small>可多选</small>
+              </div>
+              <div class="chip-row multi-choice" data-profile="food_preferences">
+                <button class="chip" type="button" data-value="烤肉">烤肉</button>
+                <button class="chip" type="button" data-value="火锅">火锅</button>
+                <button class="chip" type="button" data-value="日料">日料</button>
+                <button class="chip" type="button" data-value="西餐">西餐</button>
+                <button class="chip" type="button" data-value="小龙虾">小龙虾</button>
+                <button class="chip" type="button" data-value="粤菜">粤菜</button>
+              </div>
+            </div>
+
+            <div class="field-block">
+              <div class="field-head">
+                <span>休闲偏好</span>
+                <small>可多选</small>
+              </div>
+              <div class="chip-row multi-choice" data-profile="leisure_preferences">
+                <button class="chip" type="button" data-value="KTV">KTV</button>
+                <button class="chip" type="button" data-value="电影">电影</button>
+                <button class="chip" type="button" data-value="密室逃脱">密室逃脱</button>
+                <button class="chip" type="button" data-value="剧本杀">剧本杀</button>
+                <button class="chip" type="button" data-value="逛展">逛展</button>
+                <button class="chip" type="button" data-value="足疗按摩">足疗按摩</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-actions">
+          <button class="secondary-btn" type="button" id="backFromEditBtn" style="display:none;">返回</button>
+          <button class="secondary-btn" type="button" id="skipOnboardingBtn">跳过</button>
+          <button class="primary-btn" type="button" id="saveProfileBtn">开始使用</button>
+        </div>
+      </section>
+
+      <!-- ========== 首页 ========== -->
+      <section class="screen" data-screen="home">
+        <div class="screen-scroll bottom-padded">
+          <div class="home-hero">
+            <h2>小路书</h2>
+            <div class="avatar" id="userAvatar">U</div>
+          </div>
+
+          <!-- 规划入口 -->
+          <div class="planner-card">
+            <div class="planner-title">
+              <span>今晚想去哪？</span>
+              <small>自然语言描述即可</small>
+            </div>
+            <textarea id="intentInput" placeholder="例：今晚下班后想吃点东西，再找个地方唱歌放松一下。"></textarea>
+            <div class="planner-actions">
+              <button class="text-link" type="button" id="nonLocalBtn">这不是本地生活</button>
+              <button class="primary-btn compact" type="button" id="startPlanBtn">开始规划</button>
+            </div>
+          </div>
+
+          <!-- 快捷入口 -->
+          <div class="section-block">
+            <div class="section-head">
+              <h3>快捷规划</h3>
+              <span>热门组合</span>
+            </div>
+            <div class="quick-grid">
+              <button type="button" data-quick="吃烤肉">🔥 烤肉</button>
+              <button type="button" data-quick="唱歌">🎤 唱歌</button>
+              <button type="button" data-quick="看电影">🎬 电影</button>
+              <button type="button" data-quick="足疗按摩">💆 足疗</button>
+              <button type="button" data-quick="逛展">🎨 逛展</button>
+              <button type="button" data-quick="密室逃脱">🔐 密室</button>
+            </div>
+          </div>
+
+          <!-- 历史路线（占位） -->
+          <div class="section-block" id="historySection" style="display:none;">
+            <div class="section-head">
+              <h3>最近路线</h3>
+              <span>可复用</span>
+            </div>
+            <div class="history-list" id="historyList"></div>
+          </div>
+
+          <!-- 画像洞察 -->
+          <div class="insight-strip" id="insightStrip" style="display:none;">
+            <strong id="insightTitle">🎯 你的偏好</strong>
+            <span id="insightDesc"></span>
+          </div>
+        </div>
+
+        <!-- 底部 Tab -->
+        <div class="tabbar">
+          <button class="is-active" type="button" data-tab="home">规划</button>
+          <button type="button" data-tab="history">历史</button>
+          <button type="button" data-tab="me">我的</button>
+        </div>
+      </section>
+
+      <!-- ========== 我的页面 ========== -->
+      <section class="screen" data-screen="me">
+        <div class="screen-scroll">
+          <div class="profile-summary" id="profileSummaryCard">
+            <div class="avatar" id="meAvatar">U</div>
+            <div>
+              <strong id="meUsername">用户</strong>
+              <span id="meJoinDate">加入小路书</span>
+            </div>
+          </div>
+
+          <div class="section-block">
+            <div class="section-head">
+              <h3>偏好概览</h3>
+            </div>
+            <div class="profile-tags" id="profileTagsView"></div>
+          </div>
+
+          <div class="settings-list">
+            <button type="button" id="editProfileBtn">
+              <span>编辑偏好</span>
+              <span>›</span>
+            </button>
+            <button type="button" id="logoutBtn">
+              <span>退出登录</span>
+              <span>›</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="tabbar">
+          <button type="button" data-tab="home">规划</button>
+          <button type="button" data-tab="history">历史</button>
+          <button class="is-active" type="button" data-tab="me">我的</button>
+        </div>
+      </section>
+
+      <!-- ========== 规划中（loading） ========== -->
+      <section class="screen" data-screen="planning">
+        <div class="screen-scroll loading-center">
+          <div class="route-orbit">
+            <span></span><span></span><span></span>
+          </div>
+          <h2>正在规划路线…</h2>
+          <p style="color:var(--muted);margin-top:8px;">MVP 阶段路线引擎开发中，此功能即将上线</p>
+          <button class="secondary-btn" type="button" id="backFromPlanningBtn" style="margin-top:24px;">返回首页</button>
+        </div>
+      </section>
+
+      <!-- ========== Toast ========== -->
+      <div class="toast" id="toast" aria-live="polite"></div>
+
+      <!-- ========== Modal ========== -->
+      <div class="modal" id="modal" aria-hidden="true" role="dialog">
+        <div class="modal-card">
+          <button class="modal-close" type="button" id="modalClose">×</button>
+          <span class="eyebrow" id="modalEyebrow">提示</span>
+          <h3 id="modalTitle"></h3>
+          <p id="modalBody"></p>
+          <div class="modal-actions" id="modalActions"></div>
+        </div>
+      </div>
+    </main>
+
+    <script src="./api.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
